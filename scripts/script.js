@@ -78,7 +78,8 @@ function drawDrone(x, y, propellerAngle) {
   ctx.restore();
 }
 
-function executarCodigo(botao) {
+function executarCodigo() {
+  const botao = document.getElementById('botao');
   const textarea = document.getElementById('codigo');
   const flightMode = document.getElementById('modo');
   execute = !execute;
