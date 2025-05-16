@@ -17,6 +17,9 @@ let y = 0,
     thrustPower = 0;   
 let execute = false;    
 let ref = 300;
+let refArr;
+let cont = 0;
+let i = 0;
 
 document.addEventListener('keydown', (e) => {
   if (e.key === "ArrowUp") thrustPower = Math.min(thrustPower + 1, 50);
