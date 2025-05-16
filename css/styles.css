@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+    background: #0e0e0e;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+    overflow: hidden;
+}
+
+canvas {
+    background: #f0f0f0;
+    display: block;
+    margin: 20px auto;
+    border: 2px solid #333;
+}
+
+textarea {
+    margin-left: auto; 
+    margin-top: 20px; 
+    width: 400px; 
+    height: 300px;
+}
+
+#grafico {
+    background: #fff; 
+    border: 2px solid #333;
+}
+
+#container {
+    display: flex;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulação de Drone</title> 
+  <link rel="stylesheet" href="./css/styles.css"> 
+</head>
+<body>
+  <h1>Simulação de Controle Vertical de um Drone</h1>
+  <p>Use as setas ↑ e ↓ para controlar o empuxo dos motores</p>
+  <button onclick="executarCodigo(this)">Executar Controle</button>
+  <div id="container">
+    <textarea id="codigo" placeholder="Escreva aqui o código do controlador..."></textarea><br>    
+    <canvas id="grafico" width="600" height="200"></canvas>
+    <canvas id="canvas" width="600" height="600"></canvas>
+  </div>
+
+  <script src="./scripts/script.js"></script>
+
+</body>
+</html>
