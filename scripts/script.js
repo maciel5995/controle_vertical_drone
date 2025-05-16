@@ -79,12 +79,15 @@ function drawDrone(x, y, propellerAngle) {
 }
 
 function executarCodigo(botao) {
+  const textarea = document.getElementById('codigo');
+  const flightMode = document.getElementById('modo');
   execute = !execute;
-  botao.textContent = execute ? "Parar" : "Controlar";
+  botao.textContent = execute ? "Parar Controle" : "Executar Controle";
+  flightMode.textContent = execute ? "Drone em modo automático" : "Drone em modo manual";
+  textarea.disabled = !textarea.disabled;
 }
 
 function drawGraphic() {
-
   // Armazena valores
   historicoY.push(y);
   historicoRef.push(ref);
@@ -155,7 +158,7 @@ function loop() {
     ctx.fillRect(20, canvas.height / 2, 10, -barHeight);
   }
 
-  // Linha de referência
+  // Linha de referência 
   ctx.beginPath();
   ctx.setLineDash([5, 5]); // linha tracejada
   ctx.strokeStyle = "red";
@@ -163,8 +166,11 @@ function loop() {
   ctx.lineTo(canvas.width, canvas.height - ref - 20);
   ctx.stroke();
   ctx.setLineDash([]); // reseta o padrão da linha
-  
-  // drawGraphic();
+
+  // Texto com valor de ref
+  ctx.font = "14px Arial";
+  ctx.fillStyle = "red";
+  ctx.fillText("Ref: " + ref, 500, canvas.height - ref - 25);
 
   requestAnimationFrame(loop);
 }
