@@ -8,13 +8,15 @@ let historicoY = [];
 let historicoRef = [];
 const maxPontos = 600; // largura do gráfico
 
-let y = 0, 
-    y1 = 0, 
-    y2 = 0, 
-    x0 = 50, 
-    x1 = 0, 
+let y = 0,     
     angle = 0,
-    thrustPower = 0;   
+    thrustPower = 0,
+    e0 = 0,
+    e1 = 0,
+    e2 = 0,
+    u1 = 0,
+    u2 = 0,
+    u3 = 0;   
 let execute = false;    
 let ref = 300;
 let refArr;
@@ -28,15 +30,22 @@ document.addEventListener('keydown', (e) => {
 
 function modelDynamics(){
   // Modelo da dinâmica do Drone:
-  y = 1.998 * y1 - 0.998 * y2 + 4.997e-05 * thrustPower + 4.993e-05 * x1;
+  // G(S) = 1/S(S + 0.2), TS = 0.01s
+
+  // Estados internos do modelo
+  if(!modelDynamics.y1) modelDynamics.y1 = 0;
+  if(!modelDynamics.y2) modelDynamics.y2 = 0;
+  if(!modelDynamics.x1) modelDynamics.x1 = 0;
+
+  y = 1.998 * modelDynamics.y1 - 0.998 * modelDynamics.y2 + 4.997e-05 * thrustPower + 4.993e-05 * modelDynamics.x1;
    
    // Restrições
   if (y > 570) { y = 570; }  
    
    // Atualizações:
-  y2 = y1;
-  y1 = y;
-  x1 = thrustPower;
+  modelDynamics.y2 = modelDynamics.y1;
+  modelDynamics.y1 = y;
+  modelDynamics.x1 = thrustPower;
 }
 
 function update() { 
