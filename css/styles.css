@@ -1,32 +1,150 @@
+/* RESET */
+* {
+    box-sizing: border-box;
+}
+
+/* BODY */
 body {
     margin: 0;
     background: #0e0e0e;
     color: white;
     font-family: sans-serif;
     text-align: center;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
-canvas {
-    background: #f0f0f0;
-    display: block;
-    margin: 20px auto;
-    border: 2px solid #333;
-}
-
-textarea {
-    margin-left: auto; 
-    margin-top: 20px; 
-    width: 400px; 
-    height: 300px;
-}
-
-#grafico {
-    background: #fff; 
-    border: 2px solid #333;
-}
-
+/* CONTAINER */
 #container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+}
+
+/* CANVAS (geral) */
+canvas {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    background: #f0f0f0;
+    border: 2px solid #333;
+}
+
+/* CANVAS DO DRONE */
+#canvas {
+    order: 1;
+    max-height: 60vh;
+}
+
+/* CONTROLES */
+#controles {
+    display: flex;
+    gap: 20px;
+    order: 2;
+}
+
+#controles button {
+    font-size: 24px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    background: #333;
+    color: white;
+}
+
+#controles button:active {
+    background: #555;
+}
+
+/* 🔥 CORREÇÃO PRINCIPAL AQUI */
+#graficoContainer {
+    order: 3;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* CANVAS DO GRÁFICO */
+#grafico {
+    background: #fff;
+    max-height: 25vh;
+}
+
+/* ESCONDER ELEMENTOS */
+.hidden {
+    display: none !important;
+}
+
+/* BOTÕES */
+#botao, #toggleCodigo {
+    padding: 10px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+/* TEXTAREA */
+#codigo {
+    width: 100%;
+    max-width: 500px;
+    height: 200px;
+    padding: 10px;
+    font-family: monospace;
+    display: none;
+    order: 5;
+}
+
+/* BOTÃO DO CÓDIGO */
+#toggleCodigo {
+    order: 4;
+}
+
+/* ========================= */
+/* 📱 TABLET */
+/* ========================= */
+@media (min-width: 768px) {
+    #container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #canvas {
+        flex: 1 1 100%;
+    }
+
+    #graficoContainer {
+        flex: 1 1 45%;
+    }
+
+    #codigo {
+        flex: 1 1 100%;
+    }
+}
+
+/* ========================= */
+/* 💻 DESKTOP */
+/* ========================= */
+@media (min-width: 1024px) {
+    #container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    #canvas {
+        flex: 2;
+    }
+
+    #graficoContainer {
+        flex: 2;
+    }
+
+    #codigo {
+        display: block;
+        flex: 1;
+        max-width: 400px;
+    }
+
+    #toggleCodigo {
+        display: none;
+    }
 }

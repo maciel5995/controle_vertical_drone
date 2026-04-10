@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,17 +7,31 @@
   <link rel="stylesheet" href="./css/styles.css"> 
 </head>
 <body>
-  <h1>Simulação de Controle Vertical de um Drone</h1>
-  <p>Use as setas ↑ e ↓ para controlar o empuxo dos motores</p>
+
+  <h1>Controle de Drone</h1>
+  <p>Use as setas ↑ e ↓ ou os botões para controlar o Drone</p>
   <p id="modo">Drone em modo manual</p>
+
   <button onclick="executarCodigo()" id="botao">Executar Controle</button>
+
   <div id="container">
-    <textarea id="codigo" placeholder="Escreva aqui o código do controlador..."></textarea><br>    
-    <canvas id="grafico" width="600" height="200"></canvas>
-    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <canvas id="canvas"></canvas>
+
+    <div id="controles">
+      <button id="btnUp">⬆️</button>
+      <button id="btnDown">⬇️</button>
+    </div>
+
+    <div id="graficoContainer" class="hidden">
+      <canvas id="grafico"></canvas>
+    </div>
+
+    <button id="toggleCodigo">Mostrar Código</button>
+    <textarea id="codigo" placeholder="Escreva aqui o código do controlador..."></textarea>
+
   </div>
 
   <script src="./scripts/script.js"></script>
-
 </body>
 </html>
