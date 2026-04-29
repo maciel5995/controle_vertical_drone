@@ -18,7 +18,11 @@ let erroAtivo = false;
 
 let y = 0, 
     angle = 0, 
-    thrustPower = 0,
+    power = 0,
+    integral = 0,
+    derivada = 0,
+    erro = 0,
+    pre_erro = 0,
     e0 = 0,
     e1 = 0,
     e2 = 0,
@@ -47,11 +51,11 @@ function ajustarCanvas() {
 /* ========================= */
 document.addEventListener('keydown', (e) => {
   if (e.key === "ArrowUp") {
-    thrustPower = Math.min(thrustPower + 1, 50);
+    power = Math.min(power + 1, 50);
   }
 
   if (e.key === "ArrowDown") {
-    thrustPower = Math.max(thrustPower - 1, -50);   
+    power = Math.max(power - 1, -50);   
   }
 });
 
@@ -60,21 +64,11 @@ document.addEventListener('keydown', (e) => {
 /* ========================= */
 let intervalUp, intervalDown;
 
-// function startUp() {
-//   intervalUp = setInterval(() => {
-//     thrustPower = Math.min(thrustPower + 1, 50);   
-//   }, 50);  
-// }
-
-// function stopUp() {
-//   clearInterval(intervalUp);
-//   intervalUp = null;
-// }
 function startUp() {
-  if (intervalUp) return; // 🔒 evita duplicação
+  if (intervalUp) return; // evita duplicação
 
   intervalUp = setInterval(() => {
-    thrustPower = Math.min(thrustPower + 1, 50);
+    power = Math.min(power + 1, 50);
   }, 50);
 }
 
@@ -85,7 +79,7 @@ function stopUp() {
 
 function startDown() {
   intervalDown = setInterval(() => {
-    thrustPower = Math.max(thrustPower - 1, -50);  
+    power = Math.max(power - 1, -50);  
   }, 50);
 }
 
@@ -94,8 +88,6 @@ function stopDown() {
   intervalDown = null;
 }
 
-// btnUp.addEventListener("touchstart", startUp);
-// btnUp.addEventListener("touchend", stopUp);
 btnUp.addEventListener("mousedown", startUp);
 btnUp.addEventListener("mouseup", stopUp);
 
@@ -139,14 +131,14 @@ function modelDynamics(){
   // Modelo da dinâmica do Drone:
   // G(S) = 1/S(S + 0.2), TS = 0.01s
   y = 1.998 * modelDynamics.y1 - 0.998 * modelDynamics.y2 
-    + 4.997e-05 * thrustPower + 4.993e-05 * modelDynamics.x1;
+    + 4.997e-05 * power + 4.993e-05 * modelDynamics.x1;
 
   if (y > 530) y = 530;
   if (y < 0) y = 0;
 
   modelDynamics.y2 = modelDynamics.y1;
   modelDynamics.y1 = y;
-  modelDynamics.x1 = thrustPower;
+  modelDynamics.x1 = power;
 }
 
 /* ========================= */
@@ -316,7 +308,7 @@ function loop() {
   ctx.fillRect(0, soloY, canvas.width, 20);
 
   // hélices
-  angle += 0.3 + Math.abs(thrustPower) * 0.01;
+  angle += 0.3 + Math.abs(power) * 0.01;
 
   drawDrone(canvas.width / 2, soloY - y, angle);
 
@@ -324,9 +316,9 @@ function loop() {
   ctx.fillStyle = "#000";
   ctx.fillRect(20, 0, 10, canvas.height);
 
-  let barHeight = (thrustPower / 50) * canvas.height;
+  let barHeight = (power / 50) * canvas.height;
 
-  if (thrustPower >= 0) {
+  if (power >= 0) {
     ctx.fillStyle = "green";
     ctx.fillRect(20, canvas.height / 2 - barHeight, 10, barHeight);
   } else {
@@ -335,7 +327,7 @@ function loop() {
   }
 
   // Limite de segurança
-  thrustPower = Math.max(-50, Math.min(50, thrustPower));
+  power = Math.max(-50, Math.min(50, power));
 
   // linha ref
   const refY = soloY - ref;
