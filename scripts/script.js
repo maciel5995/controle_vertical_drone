@@ -60,9 +60,21 @@ document.addEventListener('keydown', (e) => {
 /* ========================= */
 let intervalUp, intervalDown;
 
+// function startUp() {
+//   intervalUp = setInterval(() => {
+//     thrustPower = Math.min(thrustPower + 1, 50);   
+//   }, 50);  
+// }
+
+// function stopUp() {
+//   clearInterval(intervalUp);
+//   intervalUp = null;
+// }
 function startUp() {
+  if (intervalUp) return; // 🔒 evita duplicação
+
   intervalUp = setInterval(() => {
-    thrustPower = Math.min(thrustPower + 1, 50);   
+    thrustPower = Math.min(thrustPower + 1, 50);
   }, 50);
 }
 
@@ -82,8 +94,8 @@ function stopDown() {
   intervalDown = null;
 }
 
-btnUp.addEventListener("touchstart", startUp);
-btnUp.addEventListener("touchend", stopUp);
+// btnUp.addEventListener("touchstart", startUp);
+// btnUp.addEventListener("touchend", stopUp);
 btnUp.addEventListener("mousedown", startUp);
 btnUp.addEventListener("mouseup", stopUp);
 
@@ -91,6 +103,22 @@ btnDown.addEventListener("touchstart", startDown);
 btnDown.addEventListener("touchend", stopDown);
 btnDown.addEventListener("mousedown", startDown);
 btnDown.addEventListener("mouseup", stopDown);
+
+btnUp.addEventListener("touchcancel", stopUp);
+btnDown.addEventListener("touchcancel", stopDown);
+
+btnUp.addEventListener("contextmenu", (e) => e.preventDefault());
+btnDown.addEventListener("contextmenu", (e) => e.preventDefault());
+
+btnUp.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  startUp();
+});
+
+btnUp.addEventListener("touchend", (e) => {
+  e.preventDefault();
+  stopUp();
+});
 
 /* ========================= */
 /* TOGGLE EDITOR */
@@ -306,7 +334,7 @@ function loop() {
     ctx.fillRect(20, canvas.height / 2, 10, -barHeight);
   }
 
-  // 🔒 Limite de segurança
+  // Limite de segurança
   thrustPower = Math.max(-50, Math.min(50, thrustPower));
 
   // linha ref
