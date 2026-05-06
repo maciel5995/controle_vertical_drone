@@ -51,6 +51,10 @@ canvas {
     border-radius: 10px;
     background: #333;
     color: white;
+    touch-action: none;           /* impede gestos nativos */
+    -webkit-user-select: none;    /* Safari */
+    user-select: none;            /* impede seleção de texto */
+    -webkit-touch-callout: none;  /* remove menu copiar/colar */
 }
 
 #controles button:active {

@@ -30,7 +30,7 @@ let y = 0,
     u2 = 0,
     u3 = 0; 
 let execute = false;    
-let ref = 150;
+let ref = 200;
 let refArr;
 let cont = 0;
 let i = 0;
@@ -69,7 +69,7 @@ function startUp() {
 
   intervalUp = setInterval(() => {
     power = Math.min(power + 1, 50);
-  }, 50);
+  }, 16);
 }
 
 function stopUp() {
@@ -78,9 +78,11 @@ function stopUp() {
 }
 
 function startDown() {
+  if (intervalDown) return; // evita duplicação
+
   intervalDown = setInterval(() => {
     power = Math.max(power - 1, -50);  
-  }, 50);
+  }, 16);
 }
 
 function stopDown() {
@@ -91,8 +93,16 @@ function stopDown() {
 btnUp.addEventListener("mousedown", startUp);
 btnUp.addEventListener("mouseup", stopUp);
 
-btnDown.addEventListener("touchstart", startDown);
-btnDown.addEventListener("touchend", stopDown);
+btnDown.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  startDown();
+});
+
+btnDown.addEventListener("touchend", (e) => {
+  e.preventDefault();
+  stopDown();
+});
+
 btnDown.addEventListener("mousedown", startDown);
 btnDown.addEventListener("mouseup", stopDown);
 
@@ -101,6 +111,7 @@ btnDown.addEventListener("touchcancel", stopDown);
 
 btnUp.addEventListener("contextmenu", (e) => e.preventDefault());
 btnDown.addEventListener("contextmenu", (e) => e.preventDefault());
+
 
 btnUp.addEventListener("touchstart", (e) => {
   e.preventDefault();
@@ -125,20 +136,16 @@ toggleBtn.addEventListener("click", () => {
 /* MODELO */
 /* ========================= */
 function modelDynamics(){
-  if(!modelDynamics.y1) modelDynamics.y1 = 0;
-  if(!modelDynamics.y2) modelDynamics.y2 = 0;
-  if(!modelDynamics.x1) modelDynamics.x1 = 0;
-  // Modelo da dinâmica do Drone:
-  // G(S) = 1/S(S + 0.2), TS = 0.01s
-  y = 1.998 * modelDynamics.y1 - 0.998 * modelDynamics.y2 
-    + 4.997e-05 * power + 4.993e-05 * modelDynamics.x1;
+  if(!modelDynamics.y1) modelDynamics.y1 = 0; 
 
+  // Modelo da dinâmica do Drone:
+  // G(S) = 20/(S + 1), TS = 0.0167s
+  y = 0.9834 * modelDynamics.y1 + 0.3312 * power;
+  
   if (y > 530) y = 530;
   if (y < 0) y = 0;
 
-  modelDynamics.y2 = modelDynamics.y1;
   modelDynamics.y1 = y;
-  modelDynamics.x1 = power;
 }
 
 /* ========================= */
