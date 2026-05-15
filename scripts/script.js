@@ -21,6 +21,7 @@ let y = 0,
     power = 0,
     integral = 0,
     derivada = 0,
+    deriv_f1 = 0,
     erro = 0,
     pre_erro = 0,
     e0 = 0,
@@ -31,7 +32,7 @@ let y = 0,
     u3 = 0; 
 let execute = false;    
 let ref = 200;
-let refArr;
+let refArr = [200,300,200,100];
 let cont = 0;
 let i = 0;
 
@@ -137,15 +138,23 @@ toggleBtn.addEventListener("click", () => {
 /* ========================= */
 function modelDynamics(){
   if(!modelDynamics.y1) modelDynamics.y1 = 0; 
+  if(!modelDynamics.y2) modelDynamics.y2 = 0; 
+  if(!modelDynamics.x1) modelDynamics.x1 = 0; 
 
   // Modelo da dinâmica do Drone:
   // G(S) = 20/(S + 1), TS = 0.0167s
-  y = 0.9834 * modelDynamics.y1 + 0.3312 * power;
+  // y = 0.9834 * modelDynamics.y1 + 0.3312 * power;
+  
+  // Modelo da dinâmica do Drone:
+  // G(S) = 200/(S + 1)(S + 10), TS = 0.0167s
+  y = 1.83 * modelDynamics.y1 - 0.8322 * modelDynamics.y2 + 0.02625 * power + 0.02469 * modelDynamics.x1;
   
   if (y > 530) y = 530;
   if (y < 0) y = 0;
 
+  modelDynamics.y2 = modelDynamics.y1;
   modelDynamics.y1 = y;
+  modelDynamics.x1 = power;
 }
 
 /* ========================= */
@@ -282,6 +291,13 @@ function drawGraphic() {
 /* ========================= */
 function loop() {
   modelDynamics();
+  cont++;
+  if(cont % 600 == 0) {    
+    i++;
+    if(i > 3) i = 0;
+    ref = refArr[i];
+    cont = 0;    
+  }
 
   if (execute && codigo.value.trim() !== "" && !erroAtivo) {
 
